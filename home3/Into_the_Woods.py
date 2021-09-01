@@ -24,4 +24,20 @@ S = Stack()
 
 inp = input('Enter Input : ').split(',')
 
+for i in inp:
+    if len(i) > 1:
+        i = i.split()
+        if i[0] == 'A':
+            for j in range(S.size()):
+                #print("1")
+                if int(i[1]) > int(S.items[-1]) or int(i[1]) == int(S.items[-1]) : 
+                    #print("**2**")
+                    #print(S.items[-1])
+                    S.pop()
+                    
+
+            S.push(i[1])
+            #print(S.items)
+    if i == 'B':
+        print(S.size())
 ### Enter Your Code Here ###
