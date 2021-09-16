@@ -8,6 +8,7 @@ class LinkedList:
     def __init__(self):
         self.head = None
         self.tail = None
+        self.Size = 0
 
     def __str__(self):
         if self.isEmpty():
@@ -32,24 +33,214 @@ class LinkedList:
 
     def append(self, item):
         #Code Here
+        if self.head == None :
+            self.head = Node(item)
+            self.Size += 1
+        else :
+            self.insertapp(self.Size-1,item) 
+            
+    def insertapp(self, pos, item):
+        q = self.nodeAtnext(pos)
+        p = Node(item)
+        p.next = None
+        q.next = p
+        p.previous = q
+        self.tail = p
+        #q.next = self.Node(data,q.next)
+        self.Size += 1
 
     def addHead(self, item):
         #Code Here
+        if self.Size == 0:
+            if self.head == None :
+                self.head = Node(item)
+                self.tail = self.head
+                self.Size += 1
+        else :
+            self.inserthead(0,item)
+
+    def inserthead(self, pos, item):
+        #Code Here
+        q = self.nodeAtnext(pos)
+        p = Node(item)
+        p.previous = None
+        p.next = q
+        q.previous = p
+        self.head = p
+        self.Size += 1
 
     def insert(self, pos, item):
         #Code Here
+        if(pos<0):
+            check=pos*-1
+        else:
+            check=pos
+        if self.Size == 0:
+            if self.head == None :
+                self.head = Node(item)
+                self.tail = self.head
+                self.Size += 1
+                return
+            else :
+                q = self.nodeAtnext(self.Size-1)
+                x = Node(item)
+                x.previous = q
+                x.next = None
+                q.next = x
+                self.Size += 1
+                return
+        if(self.Size>= check):
+            if pos>0:
+                if(self.Size>pos):
+                    islen=pos-1
+                    node=self.head
+                    for i in range(islen):
+                        node=node.next
+                        ISnode=Node(item)
+                        Cnode=node.next
+                        node.next=ISnode
+                        ISnode.next=Cnode
+                        ISnode.previous=node
+                        Cnode.previous=ISnode
+                else:
+                    Innode=Node(item)
+                    Innode.previous=self.tail
+                    self.tail.next = Innode
+                    self.tail = Innode 
+            if pos<0:
+                sq1=(self.Size+pos)-1
+                if(self.Size>sq1):
+                    node=self.head
+                    for i in range(sq1):
+                        node=node.next
+                    ISnode=Node(item)
+                    Cnode=node.next
+                    node.next=ISnode
+                    ISnode.next=Cnode
+                    ISnode.previous=node
+                    Cnode.previous=ISnode
+                else:
+                    Innode=Node(item)
+                    Innode.next=self.head
+                    self.head.previous = Innode
+                    self.head = Innode 
+            if(pos==0):
+                if self.isEmpty():
+                    self.head = Node(item)
+                    self.tail = self.head
+                    return 0
+                elif(self.tail is None and self.head is not None):
+                    node = self.head
+                    self.tail=node
+                    self.head = Node(item)
+                    self.head.next = node
+                    node.previous=self.head
+                elif(self.tail is not None and self.head is not None):
+                    Anode= self.head
+                    self.head = Node(item)
+                    Anode.previous=self.head
+                    self.head.next=Anode
+        else:
+            if(pos>0):
+                if self.isEmpty():
+                    self.head = Node(item)
+                    self.tail = self.head
+                    return 0
+                else:
+                    Innode=Node(item)
+                    cnode2=self.tail
+                    Innode.previous=self.tail
+                    cnode2.next = Innode
+                    self.tail = Innode 
+            if(pos<0):
+                if self.isEmpty():
+                    self.head = Node(item)
+                    self.tail = self.head
+                    return 0
+                else:
+                    Innode=Node(item)
+                    CnodeN2 = self.head
+                    Innode.next=self.head
+                    CnodeN2.previous = Innode
+                    self.head = Innode   
+        self.Size += 1
 
     def search(self, item):
         #Code Here
+        if self.found(item) == 0:
+            return 'Not Found'
+        else:
+            return 'Found'
+
+    def found(self,item):
+        return self.indexOf(item) >= 0
+    
+    def indexOf(self,item) :
+        q = self.head
+        for i in range(self.Size) :
+            if q.value == item :
+                return i
+            q = q.next
+        return -1
 
     def index(self, item):
         #Code Here
+        p = self.head
+        for i in range(self.Size) :
+            if p.value == item :
+                return i
+            p = p.next
+        return -1
 
     def size(self):
         #Code Here
+        return self.Size
 
     def pop(self, pos):
         #Code Here
+        if pos<0 or pos>=self.Size:
+            return 'Out of Range'
+        if pos == 0 :
+            self.head = self.head.next
+            self.previous = None
+            self.Size -= 1
+        elif pos == self.Size - 1 :
+            x = self.nodeAtnext(pos)
+            p = x.previious
+            p.next = None
+            self.Size -= 1
+        else:
+            self.removeNode(self.nodeAtnext(pos))
+        return 'Success'
+    
+    def pint(self):
+        if self.Size == 0:
+            return 'Emtpy'
+        current = self.head
+        s = ''
+        while current:
+            s+=str(current.value)+' '
+            current = current.next
+        return s
+
+    def removeNode(self,q) :
+        p = q.previous
+        x = q.next
+        p.next = x
+        x.previous = p
+        self.Size -= 1
+
+    def nodeAtnext(self,i) :              # หาค่าตำแหน่งของโหนด เทียบกับ อินเด็กซ์
+        p = self.head
+        for j in range(i) :
+            p = p.next
+        return p
+
+    def nodeAtprev(self,i) :              # หาค่าตำแหน่งของโหนด เทียบกับ อินเด็กซ์
+        p = self.tail
+        for j in range(i) :
+            p = p.next
+        return p
 
 L = LinkedList()
 inp = input('Enter Input : ').split(',')
