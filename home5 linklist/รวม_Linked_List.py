@@ -280,6 +280,7 @@ class LinkedList2:
         #Code Here
         if self.head == None :
             self.head = Node(item)
+            self.tail = self.head
             self.Size += 1
         else :
             self.insertapp(self.Size-1,item) 
@@ -487,6 +488,21 @@ class LinkedList2:
             p = p.next
         return p
 
-L = LinkedList()
+L1 = LinkedList()
 L2 = LinkedList2()
 
+inp = input("Enter Input (L1,L2) : ").split()
+
+kk = inp[0].split('->')
+kk2 = inp[1].split('->')
+
+for i in kk:
+    L1.append(i)
+
+for i in kk2:
+    L2.append(i)
+
+print("L1    :",L1)
+print("L2    :",L2)
+L1.append(L2.reverse())
+print("Merge :",L1)
