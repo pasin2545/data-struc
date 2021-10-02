@@ -37,7 +37,7 @@ class LinkedList:
             self.head = Node(item)
             self.Size += 1
         else :
-            self.insertapp(self.Size-1,item) 
+            self.insertapp(self.Size-1,item)
             
     def insertapp(self, pos, item):
         q = self.nodeAtnext(pos)
